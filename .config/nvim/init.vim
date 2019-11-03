@@ -14,6 +14,12 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Make sure you use single quotes
 
+" Multiple cursors
+Plug 'terryma/vim-multiple-cursors'
+
+" Common shell commands (rename, delete, etc)
+Plug 'tpope/vim-eunuch'
+
 " indent lines
 Plug 'Yggdroot/indentLine'
 
@@ -75,8 +81,8 @@ call plug#end()
 " -- Plugin config ------------------------------------------------------------
 " -----------------------------------------------------------------------------
 
-" NERDTree - Map <C-n> to opening NERDTree
-nnoremap <C-n> :NERDTreeToggle<CR>
+" NERDTree - Map <A-n> to opening NERDTree
+nnoremap <A-n> :NERDTreeToggle<CR>
 
 " NERDTree - Open NERDTree when vim starts up on opening a directory
 autocmd StdinReadPre * let s:std_in=1
@@ -129,19 +135,6 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " coc.nvim - Close preview window when completion is done
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" NERDCommenter
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" Align line-wise comment delimiters flush left instead of following indentation
-let g:NERDDefaultAlign = 'left'
-" Trim trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-" Set custom delims
-let g:NERDCustomDelimiters =
-    \ {
-    \ 'purescript': { 'left': '-- |', 'right': '' }
-    \ }
 
 " -----------------------------------------------------------------------------
 " -- Misc ---------------------------------------------------------------------
