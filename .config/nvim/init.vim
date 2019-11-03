@@ -51,7 +51,7 @@ Plug 'wincent/ferret'
 Plug 'scrooloose/nerdtree'
 
 " Comments
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 
 " Autocomplete
 Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
