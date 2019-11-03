@@ -1,0 +1,12 @@
+*
+!.gitignore
+
+!.config
+!.config/nvim
+!.config/nvim/ftdetect
+!.config/nvim/ftdetect/*
+!.config/nvim/ftplugin
+!.config/nvim/ftplugin/*
+!.config/nvim/syntax
+!.config/nvim/syntax/*
+
