@@ -14,6 +14,9 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Make sure you use single quotes
 
+" Toggle window zoom
+Plug 'troydm/zoomwintab.vim'
+
 " Multiple cursors
 Plug 'terryma/vim-multiple-cursors'
 
@@ -21,7 +24,8 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
 
 " indent lines
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
+Plug 'nathanaelkane/vim-indent-guides'
 
 " Undo tree visual
 Plug 'mbbill/undotree'
@@ -81,8 +85,16 @@ call plug#end()
 " -- Plugin config ------------------------------------------------------------
 " -----------------------------------------------------------------------------
 
-" NERDTree - Map <A-n> to opening NERDTree
-nnoremap <A-n> :NERDTreeToggle<CR>
+" zoomwintab.vim
+let g:zoomwintab_remap = 0
+nnoremap <C-w><C-o> :ZoomWinTabToggle<CR>
+
+" vim-indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+
+" NERDTree - Map <leader>n to opening NERDTree
+nnoremap <leader>n :NERDTreeToggle<CR>
 
 " NERDTree - Open NERDTree when vim starts up on opening a directory
 autocmd StdinReadPre * let s:std_in=1
