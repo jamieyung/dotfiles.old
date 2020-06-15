@@ -1,4 +1,3 @@
-
 " set the leader key
 let mapleader = " "
 
@@ -12,40 +11,26 @@ let mapleader = " "
 
 call plug#begin('~/.config/nvim/plugged')
 
-" Make sure you use single quotes
-
-" Toggle window zoom
-Plug 'troydm/zoomwintab.vim'
-
-" Multiple cursors
-Plug 'terryma/vim-multiple-cursors'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Common shell commands (rename, delete, etc)
 Plug 'tpope/vim-eunuch'
 
-" indent lines
-" Plug 'Yggdroot/indentLine'
-Plug 'nathanaelkane/vim-indent-guides'
+" " indent lines
+" Plug 'nathanaelkane/vim-indent-guides'
 
 " Undo tree visual
 Plug 'mbbill/undotree'
 
 " Colour schemes
-Plug 'joshdick/onedark.vim'
 Plug 'NLKNguyen/papercolor-theme'
 
 " Better statusline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" Git wrapper
-Plug 'tpope/vim-fugitive'
-
 " Git gutter
 Plug 'airblade/vim-gitgutter'
-
-" Language syntax and highlighting
-Plug 'sheerun/vim-polyglot'
 
 " Language server support for purescript
 Plug 'frigoeu/psc-ide-vim'
@@ -57,15 +42,14 @@ Plug 'junegunn/fzf.vim'
 " Multi-file search/replace
 Plug 'wincent/ferret'
 
+" Tame the quickfix window
+Plug 'romainl/vim-qf'
+
 " File explorer
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 
 " Comments
 Plug 'tpope/vim-commentary'
-
-" Autocomplete
-Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
-Plug 'purescript-contrib/purescript-vim'
 
 " Highlights yank
 Plug 'machakann/vim-highlightedyank'
@@ -73,11 +57,11 @@ Plug 'machakann/vim-highlightedyank'
 " Surround
 Plug 'tpope/vim-surround'
 
-" Trailing whitespace highlighting
-Plug 'ntpeters/vim-better-whitespace'
-
 " Show number and index of search matches
 Plug 'google/vim-searchindex'
+
+" Haxe
+Plug 'jdonaldson/vaxe'
 
 call plug#end()
 
@@ -85,13 +69,16 @@ call plug#end()
 " -- Plugin config ------------------------------------------------------------
 " -----------------------------------------------------------------------------
 
-" zoomwintab.vim
-let g:zoomwintab_remap = 0
-nnoremap <C-w><C-o> :ZoomWinTabToggle<CR>
+let g:deoplete#enable_at_startup = 1
 
-" vim-indent-guides
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 0
+" " vim-indent-guides
+" let g:indent_guides_enable_on_vim_startup = 1
+" let g:indent_guides_auto_colors = 0
+
+" vim-qf
+nmap <C-p> <Plug>(qf_qf_previous)
+nmap <C-n> <Plug>(qf_qf_next)
+nmap <C-c> <Plug>(qf_qf_toggle)
 
 " NERDTree - Map <leader>n to opening NERDTree
 nnoremap <leader>n :NERDTreeToggle<CR>
@@ -103,54 +90,28 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 " NERDTree - Close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" gitgutter - gitgutter uses the signcolumn to display
-set signcolumn=yes
+" gitgutter
+let g:gitgutter_map_keys = 0
 
 " fzf.vim
+let $FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 nnoremap <leader>f :FZF<CR>
 nnoremap <leader>b :Buffers<CR>
+
+" ferret
+let g:FerretMap = 0
+nmap <leader>a <Plug>(FerretAck)
+nmap <leader>s <Plug>(FerretAckWord)
 
 " vim-airline
 let g:airline#extensions#branch#displayed_head_limit = 10 " truncates branch names to 10
 
-" coc.nvim - Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" coc.nvim - Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" coc.nvim - Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-" coc.nvim - Remap for do codeAction of current line
-nmap <leader>cf <Plug>(coc-fix-current)
-
-" coc.nvim - Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gr <Plug>(coc-references)
-
-" coc.nvim - Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" coc.nvim - Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" coc.nvim - Close preview window when completion is done
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
 " -----------------------------------------------------------------------------
 " -- Misc ---------------------------------------------------------------------
 " -----------------------------------------------------------------------------
+
+" git-gutter uses the sign gutter
+set signcolumn=yes
 
 " Use <Leader>c for ciw with repeatability
 nnoremap <silent> <Leader>c :let @/=expand('<cword>')<cr>cgn
@@ -189,14 +150,10 @@ nnoremap <M-k> <C-W>k
 nnoremap <M-h> <C-W>h
 nnoremap <M-l> <C-W>l
 
-" Centers screen after the jump
-nnoremap <M-d> <C-d>zz
-nnoremap <C-u> <C-u>zz
-
 " Always enter terminal in insert mode
-if has('nvim')
-  au BufEnter,BufNew,TermOpen * if &buftype == 'terminal' | :startinsert | endif
-endif
+" if has('nvim')
+"   au BufEnter,BufNew,TermOpen * if &buftype == 'terminal' | :startinsert | endif
+" endif
 
 " Toggle 'default' terminal
 nnoremap <M-t> :call ChooseTerm("term-slider", 1)<CR>
@@ -270,8 +227,8 @@ augroup numbertoggle
 augroup END
 
 " Autoread fix
-au FocusGained,BufEnter * :silent! !
-au FocusLost,WinLeave * :silent! noautocmd w
+" au FocusGained,BufEnter * :silent! !
+" au FocusLost,WinLeave * :silent! noautocmd w
 
 " stop space from moving cursor
 nnoremap <Space> <Nop>
@@ -281,15 +238,6 @@ set inccommand=split
 
 " Map leader esc to exit terminal mode
 tnoremap <leader><esc> <c-\><c-n>
-
-" Allow prev/next location jumps in terminal mode
-tnoremap <c-o> <c-\><c-o>
-tnoremap <c-i> <c-\><c-i>
-
-" leader tv to open terminal in vertical split
-nnoremap <leader>tv :vs term://bash<cr>
-" leader te to open terminal in current split
-nnoremap <leader>te :e term://bash<cr>
 
 " use system clipboard for copy paste
 set clipboard=unnamed
@@ -311,9 +259,6 @@ set number
 
 " enable mouse
 set mouse=a
-
-" set the command window height to 2 lines
-set cmdheight=3
 
 " set encoding to UTF-8
 set encoding=utf-8
@@ -364,9 +309,6 @@ nmap k gk
 nnoremap <leader>z :wq<CR>
 nnoremap <leader>w :w<CR>
 
-" fuzzy search in files
-nnoremap <leader>r :Rg<CR>
-
 " make 'Y' yank from cur pos to end of line instead of yanking the whole line
 nnoremap Y y$
 
@@ -396,9 +338,19 @@ set hlsearch
 " cr is needed for completion and in other contexts).
 nnoremap <leader><CR> :nohlsearch<CR>
 
-" highlight current line
-set cursorline
-
 " show whitespace
 set list
 set listchars=tab:>-,trail:~,extends:>,precedes:<
+
+" Swap : and ; to make colon commands easier to type
+nnoremap ; :
+nnoremap : ;
+
+" Swap v and CTRL-V, because Block mode is more useful that Visual mode
+nnoremap    v   <C-V>
+nnoremap <C-V>     v
+vnoremap    v   <C-V>
+vnoremap <C-V>     v
+
+nnoremap H ^
+nnoremap L $
